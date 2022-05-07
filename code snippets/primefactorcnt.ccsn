@@ -1,0 +1,15 @@
+/*!snippet
+Filename: primefactorcnt.ccsn
+Author: 
+Description:
+Language: C C++
+GUID: {72FEEFD4-FBA7-4ACC-BA81-2A93AC0F0D4B}
+*/
+
+int primefactorcnt(int num, int pf) {
+    int result = 0;
+    for (; num % pf == 0; result++) {
+        num /= pf;
+    }
+    return result
+}

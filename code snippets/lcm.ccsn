@@ -1,0 +1,21 @@
+/*!snippet
+Filename: lcm.ccsn
+Author: 
+Description:
+Language: C C++
+GUID: {F9402CD9-EBF5-42AE-B50D-3AEBE14EFCE7}
+Include:
+    {205DFB57-4DC0-4E54-A9D2-9AD46835E5AB}
+*/
+
+int lcm(int a, int b) {
+    return a > b ? (a / gcd(a, b)) * b : (b / gcd(a, b)) * a;
+}
+
+long int lcml(long int a, long int b) {
+    return a > b ? (a / gcdl(a, b)) * b : (b / gcdl(a, b)) * a;
+}
+
+long long int lcmll(long long int a, long long int b) {
+    return a > b ? (a / gcdll(a, b)) * b : (b / gcdll(a, b)) * a;
+}

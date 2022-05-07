@@ -1,0 +1,19 @@
+/*!snippet
+Filename: gcd.ccsn
+Author: 
+Description: Greatest common divisor function based on Euclidean algorithm
+Language: C C++
+GUID: {205DFB57-4DC0-4E54-A9D2-9AD46835E5AB}
+*/
+
+int gcd(int a, int b) {
+	return b ? gcd(b, a % b) : a;
+}
+
+long int gcdl(long int a, long int b) {
+	return b ? gcdl(b, a % b) : a;
+}
+
+long long int gcdll(long long int a, long long int b) {
+	return b ? gcdll(b, a % b) : a;
+}

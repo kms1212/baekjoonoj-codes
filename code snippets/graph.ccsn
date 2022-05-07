@@ -1,0 +1,179 @@
+/*!snippet
+Filename: graph.ccsn
+Author: 
+Description:
+Language: C C++
+GUID: {48FCED5E-86AA-4D48-A586-A6EB271D6CCF}
+Headers: 
+    C:
+        stdio.h
+        stdlib.h
+        string.h
+        stdarg.h
+    C++:
+        cstdio
+        cstdlib
+        cstring
+        cstdarg
+Include:
+    {41D7AEAB-724B-4DE1-B2B7-C9A64D481BBC}
+*/
+
+void showgraph(unsigned int xsize, int ysize, double xprecision, double yprecision, int fcnt, ...) {
+    typedef double (*funcptr)(double);
+    funcptr* flist = (funcptr*)malloc(sizeof(funcptr*) * fcnt);
+    va_list valist;
+    va_start(valist, fcnt);
+    for (int i = 0; i < fcnt; i++) {
+        flist[i] = va_arg(valist, funcptr);
+    }
+    va_end(valist);
+
+    if (xprecision < 0 || yprecision < 0)
+        return;
+    if (ysize < 0) {
+        int maxabs = 0;
+        for (int x = 0; x < xsize * 2 + 1; x++) {
+            for (int i = 0; i < fcnt; i++) {
+                double funcval = flist[i](((double)x - xsize) * xprecision);
+                if (isnan(funcval))
+                    continue;
+                int value = abs((int)round(funcval / yprecision));
+                if (value > maxabs)
+                    maxabs = value;
+            }
+        }
+        ysize = maxabs;
+    }
+
+    char** graph = (char**)malloc(sizeof(char*) * (ysize * 2));
+    for (int i = 0; i < ysize; i++) {
+        graph[i] = (char*)malloc(sizeof(char) * (xsize * 2 + 2));
+        memset(graph[i], ' ', xsize * 2 + 1);
+        graph[i][xsize] = '|';
+    }
+    graph[ysize] = (char*)malloc(sizeof(char) * (xsize * 2 + 2));
+    memset(graph[ysize], '-', xsize * 2 + 1);
+    for (int i = ysize + 1; i < ysize * 2 + 2; i++) {
+        graph[i] = (char*)malloc(sizeof(char) * (xsize * 2 + 2));
+        memset(graph[i], ' ', xsize * 2 + 1);
+        graph[i][xsize] = '|';
+    }
+
+    for (int x = 0; x < xsize * 2 + 1; x++) {
+        for (int i = 0; i < fcnt; i++) {
+            double funcval = flist[i](((double)x - xsize) * xprecision);
+            if (isnan(funcval))
+                continue;
+            int value = (int)-round(funcval / yprecision) + ysize;
+            if (value < 0) {
+                graph[0][x] = '^';
+            } else if (value > ysize * 2) {
+                graph[ysize * 2][x] = 'v';
+            } else
+                graph[value][x] = '#';
+        }
+    }
+
+    printf("Starting x coordinate: %lg, Ending x coordinate: %lg, Graph height: %d, Precision of x: %lg, Precision of y: %lg\n", 
+        -(double)xsize * xprecision, (double)xsize * xprecision, ysize * 2 + 1, xprecision, yprecision);
+
+    for(int i = 0; i < ysize * 2 + 1; i++) {
+        printf("%7lg", (ysize - i) * yprecision);
+        for (int j = 0; j < xsize * 2 + 1; j++) {
+            if (graph[i][j] == '|') 
+                fputs("||", stdout);
+            else {
+                putchar(graph[i][j]);
+                putchar(graph[i][j]);
+            }
+        }
+        putchar('\n');
+        free(graph[i]);
+    }
+    free(graph);
+
+    free(flist);
+}
+
+void showgraphm(int xsize, int ysize, double xprecision, double yprecision, int fcnt, ...) {
+    typedef int (*funcptr)(double, double*);
+    funcptr* flist = (funcptr*)malloc(sizeof(funcptr*) * fcnt);
+    va_list valist;
+    va_start(valist, fcnt);
+    for (int i = 0; i < fcnt; i++) {
+        flist[i] = va_arg(valist, funcptr);
+    }
+    va_end(valist);
+
+    double vallist[10];
+
+    if (xprecision < 0 || yprecision < 0)
+        return;
+    if (ysize < 0) {
+        int maxabs = 0;
+        for (int x = 0; x < xsize * 2 + 1; x++) {
+            for (int j = 0; j < fcnt; j++) {
+                int valcount = flist[j](((double)x - xsize) * xprecision, vallist);
+                for (int i = 0; i < valcount; i++) {
+                    if (isnan(vallist[i]))
+                        continue;
+                    int value = abs((int)round(vallist[i] / yprecision));
+                    if (value > maxabs)
+                        maxabs = value;
+                }
+            }
+        }
+        ysize = maxabs;
+    }
+
+    char** graph = (char**)malloc(sizeof(char*) * (ysize * 2));
+    for (int i = 0; i < ysize; i++) {
+        graph[i] = (char*)malloc(sizeof(char) * (xsize * 2 + 2));
+        memset(graph[i], ' ', xsize * 2 + 1);
+        graph[i][xsize] = '|';
+    }
+    graph[ysize] = (char*)malloc(sizeof(char) * (xsize * 2 + 2));
+    memset(graph[ysize], '-', xsize * 2 + 1);
+    for (int i = ysize + 1; i < ysize * 2 + 2; i++) {
+        graph[i] = (char*)malloc(sizeof(char) * (xsize * 2 + 2));
+        memset(graph[i], ' ', xsize * 2 + 1);
+        graph[i][xsize] = '|';
+    }
+
+    for (int x = 0; x < xsize * 2 + 1; x++) {
+        for (int j = 0; j < fcnt; j++) {
+            int valcount = flist[j](((double)x - xsize) * xprecision, vallist);
+            for (int i = 0; i < valcount; i++) {
+                if (isnan(vallist[i]))
+                    continue;
+                int value = (int)-round(vallist[i] / yprecision) + ysize;
+                if (value < 0) {
+                    graph[0][x] = '^';
+                } else if (value > ysize * 2) {
+                    graph[ysize * 2][x] = 'v';
+                } else
+                    graph[value][x] = '#';
+            }
+        }
+    }
+
+    printf("Starting x coordinate: %lg, Ending x coordinate: %lg, Graph height: %d, Precision of x: %lg, Precision of y: %lg\n", 
+        -(double)xsize * xprecision, (double)xsize * xprecision, ysize * 2 + 1, xprecision, yprecision);
+
+    for(int i = 0; i < ysize * 2 + 1; i++) {
+        printf("%7lg", (ysize - i) * yprecision);
+        for (int j = 0; j < xsize * 2 + 1; j++) {
+            if (graph[i][j] == '|') 
+                fputs("||", stdout);
+            else {
+                putchar(graph[i][j]);
+                putchar(graph[i][j]);
+            }
+        }
+        putchar('\n');
+        free(graph[i]);
+    }
+    free(graph);
+    free(flist);
+}

@@ -1,0 +1,31 @@
+/*!snippet
+Filename: powi.ccsn
+Author: 
+Description:
+Language: C C++
+GUID: {6EED3874-57E2-4A64-8335-147466EE6572}
+*/
+
+int powi(int x, int n) {
+    if (n == 0)
+        return 1;
+    for (int tmp = x; n > 1; n--)
+        x *= tmp;
+    return x;
+}
+
+long int powli(long int x, long int n) {
+    if (n == 0)
+        return 1;
+    for (long int tmp = x; n > 1; n--)
+        x *= tmp;
+    return x;
+}
+
+long long int powll(long long int x, long long int n) {
+    if (n == 0)
+        return 1;
+    for (long long int tmp = x; n > 1; n--)
+        x *= tmp;
+    return x;
+}

@@ -1,0 +1,25 @@
+/*!snippet
+Filename: digitcnt.ccsn
+Author: 
+Description:
+Language: C C++
+GUID: {41D7AEAB-724B-4DE1-B2B7-C9A64D481BBC}
+*/
+
+int digitcnt(int n) {
+    int r = 1;
+    for (; n != 0; n /= 10) r++;
+    return r;
+}
+
+int digitcntl(long int n) {
+    int r = 1;
+    for (; n != 0; n /= 10) r++;
+    return r;
+}
+
+int digitcntll(long long int n) {
+    int r = 1;
+    for (; n != 0; n /= 10) r++;
+    return r;
+}

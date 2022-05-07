@@ -1,0 +1,20 @@
+/*!snippet
+Filename: uid.ccsn
+Author: 
+Description:
+Language: C C++
+GUID: {82C180BD-F588-4A81-A872-591B15985EAB}
+Headers: 
+    C:
+        stdint.h
+    C++:
+        cstdint
+*/
+
+#define NEXTID_ERROR 0xFFFFFFFFFFFFFFFF
+uint64_t _nextid = 0;
+uint64_t getUid() {
+    if (_nextid != NEXTID_ERROR)
+        _nextid++;
+    return _nextid - 1;
+}

@@ -1,0 +1,20 @@
+/*!snippet
+Filename: distance.ccsn
+Author: 
+Description:
+Language: C C++
+GUID: {D134CEF6-7906-429D-9161-63456964959B}
+Headers: 
+    C:
+        math.h
+    C++:
+        cmath
+*/
+
+long double calcdist(long double x1, long double y1, long double x2, long double y2) {
+    long double xb = x1 > x2 ? x1 : x2,
+        yb = y1 > y2 ? y1 : y2,
+        xs = x1 < x2 ? x1 : x2,
+        ys = y1 < y2 ? y1 : y2;
+    return sqrtl(powl(xb - xs, 2) + powl(yb - ys, 2));
+}
