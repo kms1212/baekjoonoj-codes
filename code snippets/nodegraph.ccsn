@@ -6,7 +6,6 @@ Language: C++
 GUID: {41BE550D-C147-4DB9-8EA0-61264D8FF546}
 Headers: 
     C++:
-        cstdio
         cstdint
         vector
         algorithm
